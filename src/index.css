@@ -1,0 +1,9 @@
+@import "tailwindcss";
+
+@theme {
+  /* Sampled from the Aenigma Solutions logo */
+  --color-brand-navy: #201040;
+  --color-brand-purple: #4810a8;
+  --color-brand-teal: #188888;
+  --color-brand-orange: #e86850;
+}
