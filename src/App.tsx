@@ -1,21 +1,47 @@
-import Header from './components/Header'
-import Hero from './components/Hero'
-import Services from './components/Services'
-import Testimonials from './components/Testimonials'
-import Footer from './components/Footer'
+import { useEffect, useState } from 'react'
+import logo from './assets/logo/aenigma-solutions-logo.png'
+import logoDark from './assets/logo/aenigma-solutions-logo-dark.png'
+
+const services = [
+  ['01', 'Technology consultancy', 'Turn complex ideas into a practical technology roadmap. We help you choose the right stack, scope, and delivery approach before costly decisions are made.', 'purple'],
+  ['02', 'Software architecture', 'Resilient, scalable foundations designed around your product, users, and business goals—not unnecessary complexity.', 'teal'],
+  ['03', 'Web applications', 'Fast, accessible websites and web platforms engineered for reliability, performance, and long-term growth.', 'orange'],
+  ['04', 'Mobile applications', 'Thoughtful native and cross-platform experiences for iOS and Android, from first prototype to production release.', 'purple'],
+  ['05', 'Desktop software', 'Purpose-built desktop tools that deliver a dependable experience across Windows, macOS, and Linux.', 'teal'],
+  ['06', 'Quality & testing', 'A quality-first process with intentional testing that reduces risk and keeps every release stable and trustworthy.', 'orange'],
+]
+const process = [
+  ['Discover', 'We listen, challenge assumptions, and define what success looks like.'],
+  ['Architect', 'We shape the solution, technology, and delivery plan around your priorities.'],
+  ['Build', 'We work iteratively, keeping progress visible and quality high.'],
+  ['Evolve', 'We launch, learn, and help the product grow with confidence.'],
+]
 
 function App() {
-  return (
-    <div className="min-h-screen bg-white dark:bg-neutral-950">
-      <Header />
-      <main>
-        <Hero />
-        <Services />
-        <Testimonials />
-      </main>
-      <Footer />
-    </div>
-  )
-}
+  const [dark, setDark] = useState(() => localStorage.getItem('theme') ? localStorage.getItem('theme') === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches)
+  const [menuOpen, setMenuOpen] = useState(false)
+  useEffect(() => { document.documentElement.classList.toggle('dark', dark); localStorage.setItem('theme', dark ? 'dark' : 'light') }, [dark])
 
+  return <div className="min-h-screen overflow-hidden bg-cream text-ink transition-colors dark:bg-night dark:text-white">
+    <header className="fixed inset-x-0 top-0 z-50 border-b border-black/5 bg-cream/85 backdrop-blur-xl dark:border-white/10 dark:bg-night/85">
+      <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 sm:px-8">
+        <a href="#top" aria-label="Aenigma Solutions home" onClick={() => setMenuOpen(false)}><img src={logo} alt="Aenigma Solutions" className="h-16 w-auto dark:hidden" /><img src={logoDark} alt="Aenigma Solutions" className="hidden h-16 w-auto dark:block" /></a>
+        <nav className="hidden items-center gap-8 text-sm font-semibold md:flex" aria-label="Main navigation"><a href="#services">Services</a><a href="#about">About</a><a href="#process">Process</a><a href="#contact" className="rounded-full bg-brand-purple px-5 py-2.5 text-white hover:bg-brand-navy dark:hover:bg-brand-teal">Start a project</a></nav>
+        <div className="flex items-center gap-2"><button type="button" className="icon-button" onClick={() => setDark(!dark)} aria-label={`Switch to ${dark ? 'light' : 'dark'} mode`}>{dark ? '☀' : '☾'}</button><button type="button" className="icon-button md:hidden" onClick={() => setMenuOpen(!menuOpen)} aria-expanded={menuOpen} aria-label="Toggle navigation">{menuOpen ? '×' : '☰'}</button></div>
+      </div>
+      {menuOpen && <nav className="border-t border-black/5 bg-cream px-5 py-5 dark:border-white/10 dark:bg-night md:hidden" aria-label="Mobile navigation">{['Services', 'About', 'Process', 'Contact'].map(item => <a key={item} href={`#${item.toLowerCase()}`} className="block py-3 font-semibold" onClick={() => setMenuOpen(false)}>{item}</a>)}</nav>}
+    </header>
+    <main>
+      <section id="top" className="relative flex min-h-screen items-center pt-28"><div className="orb orb-one" /><div className="orb orb-two" /><div className="relative mx-auto grid w-full max-w-7xl gap-14 px-5 py-20 sm:px-8 lg:grid-cols-[1.25fr_.75fr] lg:items-center">
+        <div><p className="eyebrow">Egypt born · globally minded</p><h1 className="mt-7 max-w-5xl text-5xl font-black leading-[.95] tracking-[-0.06em] sm:text-7xl lg:text-[6.7rem]">Clarity first.<br />Software that <span className="gradient-text">delivers.</span></h1><p className="mt-8 max-w-2xl text-lg leading-8 text-muted sm:text-xl dark:text-neutral-300">We combine technology consultancy, thoughtful architecture, and reliable engineering to turn ambitious ideas into software built to last.</p><div className="mt-10 flex flex-col gap-4 sm:flex-row"><a href="#contact" className="button-primary">Build with us ↗</a><a href="#services" className="button-secondary">Explore our expertise ↓</a></div></div>
+        <div className="relative mx-auto w-full max-w-md"><div className="signal-card"><div className="flex items-center justify-between"><span className="text-sm font-bold">A reliable path forward</span><span className="status-dot" /></div><div className="my-10 grid grid-cols-2 gap-3"><div className="metric"><strong>2023</strong><span>Founded in Egypt</span></div><div className="metric"><strong>Global</strong><span>Delivery mindset</span></div><div className="metric col-span-2"><strong>End-to-end</strong><span>From strategy to stable software</span></div></div><div className="flex items-center gap-3 border-t border-black/10 pt-5 text-sm dark:border-white/10"><span className="grid h-9 w-9 place-items-center rounded-full bg-brand-teal/15 text-brand-teal">✓</span>Fast decisions. Reliable outcomes.</div></div></div>
+      </div></section>
+      <section id="services" className="section-space bg-white dark:bg-neutral-950"><div className="mx-auto max-w-7xl px-5 sm:px-8"><div className="section-heading"><div><p className="eyebrow">What we do</p><h2>From the right question<br />to the right solution.</h2></div><p>We bring strategic thinking and engineering craft together—so every product starts with purpose and ships with confidence.</p></div><div className="mt-16 grid gap-px overflow-hidden rounded-3xl bg-black/10 dark:bg-white/10 md:grid-cols-2 lg:grid-cols-3">{services.map(([number,title,description,accent]) => <article key={title} className="service-card"><div className={`service-number ${accent}`}>{number}</div><h3>{title}</h3><p>{description}</p><span className="mt-8 text-2xl">↗</span></article>)}</div></div></section>
+      <section id="about" className="section-space"><div className="mx-auto grid max-w-7xl gap-16 px-5 sm:px-8 lg:grid-cols-2 lg:items-center"><div className="relative min-h-[420px]"><div className="absolute left-0 top-8 h-72 w-72 rounded-[3rem] bg-brand-purple" /><div className="absolute bottom-5 right-0 h-72 w-72 rounded-full bg-brand-teal" /><div className="absolute inset-14 grid place-items-center rounded-[3rem] border border-white/20 bg-white/70 p-10 text-center shadow-2xl backdrop-blur-xl dark:bg-night/70"><span className="text-5xl font-black tracking-tighter">Think.<br /><span className="text-brand-orange">Build.</span><br />Improve.</span></div></div><div><p className="eyebrow">Why Aenigma</p><h2 className="mt-5 text-4xl font-black tracking-tight sm:text-6xl">A partner for the decisions that matter.</h2><p className="mt-7 text-lg leading-8 text-muted dark:text-neutral-300">Founded in Egypt in 2023, Aenigma Solutions serves teams globally with pragmatic consultancy and dependable software engineering. We make the complex understandable, then build with speed and care.</p><div className="mt-10 grid gap-7 sm:grid-cols-2"><div><strong className="text-xl">Fast, with direction</strong><p className="mt-2 text-muted dark:text-neutral-400">Momentum comes from clear priorities—not rushed decisions.</p></div><div><strong className="text-xl">Reliable by design</strong><p className="mt-2 text-muted dark:text-neutral-400">Quality and maintainability are part of the plan from day one.</p></div></div></div></div></section>
+      <section id="process" className="section-space bg-brand-navy text-white"><div className="mx-auto max-w-7xl px-5 sm:px-8"><p className="eyebrow text-purple-300">How we work</p><h2 className="mt-5 max-w-3xl text-4xl font-black tracking-tight sm:text-6xl">Less mystery. More momentum.</h2><div className="mt-16 grid gap-10 md:grid-cols-4">{process.map(([title,description], i) => <div key={title} className="border-t border-white/20 pt-6"><span className="text-sm text-purple-300">0{i+1}</span><h3 className="mt-8 text-2xl font-bold">{title}</h3><p className="mt-3 leading-7 text-white/65">{description}</p></div>)}</div></div></section>
+      <section id="contact" className="section-space"><div className="mx-auto max-w-7xl px-5 sm:px-8"><div className="rounded-[2.5rem] bg-brand-orange px-6 py-16 text-brand-navy sm:px-14 lg:flex lg:items-end lg:justify-between"><div><p className="text-sm font-bold uppercase tracking-[.2em]">Have a challenge in mind?</p><h2 className="mt-5 max-w-3xl text-4xl font-black tracking-tight sm:text-6xl">Let’s find the clearest way forward.</h2></div><span className="mt-10 inline-flex rounded-full bg-brand-navy px-7 py-4 font-bold text-white lg:mt-0">Contact details coming soon</span></div><p className="mt-4 text-center text-xs text-muted dark:text-neutral-500">Contact information will be updated when confirmed.</p></div></section>
+    </main>
+    <footer className="border-t border-black/10 py-8 dark:border-white/10"><div className="mx-auto flex max-w-7xl flex-col gap-3 px-5 text-sm text-muted dark:text-neutral-400 sm:flex-row sm:justify-between sm:px-8"><span>© {new Date().getFullYear()} Aenigma Solutions</span><span>Egypt based · Serving globally</span></div></footer>
+  </div>
+}
 export default App
